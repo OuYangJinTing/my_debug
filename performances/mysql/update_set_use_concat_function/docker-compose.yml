@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql5.6:
+    image: mysql:5.6
+    environment:
+      MYSQL_DATABASE: test_performance
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    deploy:
+      resources:
+        limits:
+          cpus:  '2'
+          memory: 4G
+        reservations:
+          cpus:  '2'
+          memory: 4G
+
+  ruby:
+    image: ruby:3
+    environment:
+      MYSQL_DATABASE: test_performance
+    volumes:
+      - ./script.rb:/root/script.rb
+    command: sleep INF
+    depends_on:
+      - mysql5.6
